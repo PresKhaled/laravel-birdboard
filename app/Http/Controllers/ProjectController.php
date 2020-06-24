@@ -50,9 +50,11 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show()
     {
-        //
+        $project = Project::findOrFail(request('project'));
+        
+        return view('projects.show', compact('project'));
     }
 
     /**

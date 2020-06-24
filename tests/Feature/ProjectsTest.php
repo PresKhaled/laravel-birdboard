@@ -42,4 +42,16 @@ class ProjectsTest extends TestCase
 
         $this->post('projects')->assertSessionHasErrors('description');
     }
+
+    /** @test */
+    public function a_user_can_view_a_project()
+    {
+        $this->withoutExceptionHandling();
+
+        $project = factory('App\Project')->create();
+
+        $this->get('project/' . $project->id)
+            ->assertSee($project->title)
+            ->assertSee($project->description);
+    }
 }

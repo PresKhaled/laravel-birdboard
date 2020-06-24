@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Birdboard</title>
+    <title>Birdboard - Specific project</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
-    <!-- Styles -->
+    
     <style>
         ul {
             font-size: 18px;
-            line-height: 1.3;
+            line-height: 2;
         }
     
         html, body {
@@ -26,18 +25,11 @@
     </style>
 </head>
 <body>
-    <h1>Projects</h1>
-    @forelse ($projects as $project)
-        <ul>
-            <a href="{{ $project->url() }}">{{ $project->title }}</a>
-            <ul>
-                <li>{{ $project->description }}</li>
-                <li style="color: green">{{ $project->created_at->diffForHumans() }}</li>
-            </ul>
-            <br />
-        </ul>
-    @empty
-        <p>No projects yet.</p>
-    @endforelse
+    <h1>Project /</h1>
+    <ul>
+        <li>{{ $project->title }}</li>
+        <li>{{ $project->description }}</li>
+        <li style="color: green">{{ $project->created_at->diffForHumans() }}</li>
+    </ul>
 </body>
 </html>
