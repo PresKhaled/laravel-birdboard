@@ -17,8 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('projects', 'ProjectController@store');
+Route::post('projects', 'ProjectController@store')->middleware('auth');
 
 Route::get('projects', 'ProjectController@index');
 
 Route::get('project/{project}', 'ProjectController@show')->name('project');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
