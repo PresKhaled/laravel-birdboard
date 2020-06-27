@@ -39,12 +39,13 @@ class ProjectController extends Controller
     {
         $attributes = request()->validate([
             'title' => 'required|max:255',
-            'description' => 'required'
+            'description' => 'required|max:255',
+            'notes' => ''
         ]);
 
-        auth()->user()->projects()->create($attributes);
+        $project = auth()->user()->projects()->create($attributes);
 
-        return redirect('projects');
+        return redirect($project->url());
     }
 
     /**
@@ -53,9 +54,9 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Project $project)
     {
-        $project = Project::findOrFail(request('project'));
+        $this->authorize('update', $project);
         
         return view('projects.show', compact('project'));
     }
@@ -78,9 +79,13 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Project $project)
     {
-        //
+        $this->authorize('update', $project);
+        
+        $project->update(request(['notes']));
+
+        return redirect(route('project', $project->id));
     }
 
     /**

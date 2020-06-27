@@ -18,10 +18,10 @@ class TaskTest extends TestCase
     }
 
     /** @test */
-    public function it_has_a_path()
+    public function it_has_a_url()
     {
         $task = factory(Task::class)->create();
 
-        $this->assertEquals("/projects/{$task->project->id}/tasks/{$task->id}", $task->path());
+        $this->assertEquals("/projects/{$task->project->id}/tasks/{$task->id}", $task->url());
     }
 }
