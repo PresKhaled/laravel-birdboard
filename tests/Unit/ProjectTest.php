@@ -31,9 +31,10 @@ class ProjectTest extends TestCase
     {
         $project = factory('App\Project')->create();
 
-        $task = $project->addTask('Test task');
+        $task = $project->addTask('Some task');// Save a task associated with current project to database, hasMany->create() relationship
 
-        $this->assertCount(1, $project->tasks);
+        $this->assertCount(1, $project->tasks);// Check if the tasks collection have an index
+
         $this->assertTrue($project->tasks->contains($task));
     }
 }

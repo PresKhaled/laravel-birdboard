@@ -11,11 +11,6 @@ class ManageProjectsTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    public function actingAsUser()
-    {
-        return $this->actingAs(factory(\App\User::class)->create());
-    }
-
     /** @test */
     public function guests_cannot_manage_projects()
     {
