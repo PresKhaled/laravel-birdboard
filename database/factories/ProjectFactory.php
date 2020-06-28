@@ -9,7 +9,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Project::class, function (Faker $faker) {
     return [
-        'owner_id' => factory('App\User'),
+        'owner_id' => factory(User::class),
         'title' => $faker->sentence,
         'description' => $faker->paragraph,
         'notes' => $faker->sentence

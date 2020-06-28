@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Project;
+use App\Task;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ProjectPolicy
+class TaskPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class ProjectPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Project  $project
+     * @param  \App\Task  $task
      * @return mixed
      */
-    public function view(User $user, Project $project)
+    public function view(User $user, Task $task)
     {
         //
     }
@@ -45,25 +45,25 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can update the project.
+     * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Project  $project
+     * @param  \App\Task  $task
      * @return mixed
      */
-    public function update(User $user, Project $project)
+    public function update(User $user, Task $task)
     {
-        return auth()->user()->is($project->owner);// Brilliant
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Project  $project
+     * @param  \App\Task  $task
      * @return mixed
      */
-    public function delete(User $user, Project $project)
+    public function delete(User $user, Task $task)
     {
         //
     }
@@ -72,10 +72,10 @@ class ProjectPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Project  $project
+     * @param  \App\Task  $task
      * @return mixed
      */
-    public function restore(User $user, Project $project)
+    public function restore(User $user, Task $task)
     {
         //
     }
@@ -84,10 +84,10 @@ class ProjectPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Project  $project
+     * @param  \App\Task  $task
      * @return mixed
      */
-    public function forceDelete(User $user, Project $project)
+    public function forceDelete(User $user, Task $task)
     {
         //
     }

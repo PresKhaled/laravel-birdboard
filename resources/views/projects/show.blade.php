@@ -31,5 +31,11 @@
         <li>{{ $project->description }}</li>
         <li style="color: green">{{ $project->created_at->diffForHumans() }}</li>
     </ul>
+    @foreach($project->tasks as $task)
+        <div style="display: flex">
+            <input type="text" name="task" style="width: 100%" value="{{ $task->body }}" />
+            <input type="checkbox" name="completed" checked="checked" /> {{-- $task->completed --}}
+        </div>
+    @endforeach
 </body>
 </html>

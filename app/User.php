@@ -37,14 +37,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * The relationships that should be touched on save.
-     *
-     * @var array
-     */
-    //protected $touches = ['project'];
-
-
     public function projects()
     {
         return $this->hasMany(Project::class, 'owner_id')->latest('updated_at');

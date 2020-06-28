@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use App\Project;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -29,11 +30,13 @@ class TaskController extends Controller
 
     public function store(Project $project)
     {
+        $this->authorize('update', $project);
+
         request()->validate(['body' => 'required|max:255']);
 
         $project->addTask(request('body'));
 
-        return redirect(route('project', $project->id));
+        return redirect($project->url());
     }
 
     /**
@@ -65,9 +68,18 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(Project $project, Task $task)
     {
-        //
+        $this->authorize('update', $project);
+
+        request()->validate(['body' => 'required|max:255']);
+
+        $task->update([
+            'body' => request('body'),
+            'completed' => request()->has('completed')
+        ]);
+
+        return redirect($project->url());
     }
 
     /**
