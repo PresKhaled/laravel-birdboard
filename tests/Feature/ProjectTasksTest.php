@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Facades\Tests\Setup\ProjectFactory;
 
 class ProjectTasksTest extends TestCase
 {
@@ -44,16 +45,14 @@ class ProjectTasksTest extends TestCase
     {
         $this->actingAsUser();// Sign in
 
-        $project = factory('App\Project')->create();
-
-        $task = $project->addTask('Some task');
+        $project = ProjectFactory::withTasks(1)->create();
 
         $attributes = ['body' => 'Updated'];
 
         // Update the task associated with the current project (of differnet - unauthorized - user) into database
         $this->patch(route('updateTask', [
             'project' => $project->id,
-            'task' => $task->id
+            'task' => $project->first()->id
         ]), $attributes)
             ->assertStatus(403);
 
@@ -63,18 +62,16 @@ class ProjectTasksTest extends TestCase
     /** @test */
     public function a_project_can_have_tasks()
     {
-        $this->actingAsUser();// Sign in
-
-        // Create a project associated with the current user
-        $project = auth()->user()->projects()->create(
-            factory('App\Project')->raw()
-        );
+        $project = ProjectFactory::withTasks(1)->create();
 
         // Create a task with the associated project
-        $task = factory('App\Task')->create(['project_id' => $project->id]);
+        //$task = factory('App\Task')->create(['project_id' => $project->id]);
+
+        // Grab the task saved in the database via (Setup/Factory - Fluent API -) from Eloquent Model relationship
+        $task = $project->tasks->first();
 
         // Store the task
-        $this->post($project->url(), ['body' => $task->body]);
+        $this->actingAs($project->owner)->post($project->url(), ['body' => $task->body]);
 
         // Show the task within the view
         $this->get($project->url())
@@ -84,15 +81,7 @@ class ProjectTasksTest extends TestCase
     /** @test */
     public function a_task_can_be_updated()
     {
-        $this->actingAsUser();// Sign in
-
-        // Create a project associated with the current user
-        $project = auth()->user()->projects()->create(
-            factory('App\Project')->raw()
-        );
-
-        // Create a task with the associated project
-        $task = $project->addTask('Some task');
+        $project = ProjectFactory::withTasks(1)->create();
 
         // Update request - patch - data
         $attributes = [
@@ -101,9 +90,9 @@ class ProjectTasksTest extends TestCase
         ];
 
         // Try to update the task, should be success
-        $this->patch(route('updateTask', [
+        $this->actingAs($project->owner)->patch(route('updateTask', [
             'project' => $project->id,
-            'task' => $task->id
+            'task' => $project->tasks->first()->id
         ]), $attributes);
 
         $this->assertDatabaseHas('tasks', $attributes);
@@ -112,15 +101,11 @@ class ProjectTasksTest extends TestCase
     /** @test */
     public function a_task_requires_a_body()
     {
-        $this->actingAsUser();// Sign in
-
-        $project = auth()->user()->projects()->create(
-            factory('App\Project')->raw()
-        );
+        $project = ProjectFactory::create();
 
         $attributes = factory('App\Task')->raw(['body' => '']);
 
         // Check validate, try to save the task without "body".
-        $this->post($project->url() . '/task', $attributes)->assertSessionHasErrors('body');
+        $this->actingAs($project->owner)->post($project->url() . '/task', $attributes)->assertSessionHasErrors('body');
     }
 }

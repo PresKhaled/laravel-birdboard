@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Facades\Tests\Setup\ProjectFactory;
 use App\Project;
 use Tests\TestCase;
 
@@ -53,9 +54,7 @@ class ManageProjectsTest extends TestCase
     /** @test */
     public function a_user_can_update_a_project()
     {
-        $this->actingAsUser();// Sign in
-
-        $project = factory('App\Project')->create(['owner_id' => auth()->id()]);// Create a project with current user
+        $project = ProjectFactory::create();
 
         // Project update data
         $attributes = [
@@ -63,7 +62,9 @@ class ManageProjectsTest extends TestCase
         ];
 
         // Patch (Update) request to ProjectController@update
-        $this->patch(route('updateProject', $project->id), $attributes)->assertRedirect($project->url());
+        $this->actingAs($project->owner)
+            ->patch(route('updateProject', $project->id), $attributes)
+            ->assertRedirect($project->url());
 
         // Check the data within database
         $this->assertDatabaseHas('projects', $attributes);
@@ -72,11 +73,9 @@ class ManageProjectsTest extends TestCase
     /** @test */
     public function a_user_can_view_his_project()
     {
-        $this->actingAsUser();// Sign in
+        $project = ProjectFactory::create();
 
-        $project = factory('App\Project')->create(['owner_id' => auth()->id()]);// Create a new project associated with the current user
-
-        $this->get($project->url())// Check if the data within the view
+        $this->actingAs($project->owner)->get($project->url())// Check if the data within the view
             ->assertSee($project->title)
             ->assertSee($project->description);
     }
