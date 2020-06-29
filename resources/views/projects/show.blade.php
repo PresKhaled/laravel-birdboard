@@ -24,8 +24,8 @@
             </nav>
 
             {{-- Heading --}}
-            <div class="d-flex justify-content-between my-4" style="align-items: baseline">
-                <h1 class="text-secondary m-0">{{ $project->title }}</h1>
+            <div class="d-flex justify-content-between my-4" style="align-items: start">
+                <h1 class="text-secondary m-0 pr-5">{{ $project->title }}</h1>
                 <button class="btn btn-primary" onclick="window.location = '{{ route('editProject', $project->id) }}'">Edit</button>
             </div>
         </header>
