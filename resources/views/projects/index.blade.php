@@ -1,43 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Birdboard</title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+@extends('layouts.app')
 
-    <!-- Styles -->
-    <style>
-        ul {
-            font-size: 18px;
-            line-height: 1.3;
-        }
-    
-        html, body {
-            background-color: #fff;
-            padding: 25px;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 200;
-            height: 100vh;
-            margin: 0;
-        }
-    </style>
-</head>
-<body>
-    <h1>Projects</h1>
-    @forelse ($projects as $project)
-        <ul>
-            <a href="{{ $project->url() }}">{{ $project->title }}</a>
-            <ul>
-                <li>{{ $project->description }}</li>
-                <li style="color: green">{{ $project->created_at->diffForHumans() }}</li>
-            </ul>
-            <br />
-        </ul>
-    @empty
-        <p>No projects yet.</p>
-    @endforelse
-</body>
-</html>
+@section('content')
+    <div class="container m-auto">
+        <div class="d-flex justify-content-between mb-4" style="align-items: baseline">
+            <h1 class="text-secondary">Projects</h1>
+            <button class="btn btn-primary" onclick="window.location = '{{ route('createProject') }}'">New</button>
+        </div>
+        @forelse ($projects as $project)
+            <div class="card mb-3"
+                onmouseover="$(this).css('box-shadow', '0 0 0 0.2rem rgba(97, 157, 206, 0.5)')"
+                onmouseout="$(this).css('box-shadow', '')" onclick="window.location = '{{ $project->url() }}'" style="cursor: pointer">
+
+                <div class="card-header">
+                    {{ $project->title }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-secondary" style="line-height: 1.5">{{ $project->description }}</h5>
+                    <p class="card-text text-secondary">{{ $project->created_at->diffForHumans() }}</p>
+                </div>
+
+            </div>
+        @empty
+            <div class="alert alert-info" role="alert">
+                No projects yet.
+            </div>
+        @endforelse
+    </div>
+@endsection

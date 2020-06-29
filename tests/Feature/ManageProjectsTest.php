@@ -21,6 +21,7 @@ class ManageProjectsTest extends TestCase
         $this->get('projects/create')->assertRedirect('login');// Create project view
         $this->get($project->url())->assertRedirect('login');// Access or view a project
         $this->post('projects', $project->toArray())->assertRedirect('login');// Save a new project into database
+        $this->get($project->url() . '/edit')->assertRedirect('login');
     }
 
     /** @test */
@@ -58,6 +59,8 @@ class ManageProjectsTest extends TestCase
 
         // Project update data
         $attributes = [
+            'title' => 'Updated',
+            'description' => 'Updated',
             'notes' => 'Updated'
         ];
 
@@ -66,7 +69,20 @@ class ManageProjectsTest extends TestCase
             ->patch(route('updateProject', $project->id), $attributes)
             ->assertRedirect($project->url());
 
+        $this->get($project->url() . '/edit')->assertOk();
+
         // Check the data within database
+        $this->assertDatabaseHas('projects', $attributes);
+    }
+
+    /** @test */
+    public function a_user_can_update_a_projects_general_notes()
+    {
+        $project = ProjectFactory::create();
+
+        $this->actingAs($project->owner)
+            ->patch($project->url(), $attributes = ['notes' => 'Updated']);
+
         $this->assertDatabaseHas('projects', $attributes);
     }
 
