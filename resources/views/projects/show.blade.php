@@ -50,7 +50,7 @@
                     @method('patch')
                     <div class="d-flex justify-content-between">
                         <div class="form-group w-100">
-                        {{-- TODO: Fix validation and old value issue --}}
+                        <!-- TODO: Fix validation and old value issue -->
                         <input type="text" name="body" value="{{ $task->body }}" class="form-control" style="{{ $task->completed ? 'text-decoration: line-through' : '' }}" onchange="this.form.submit()" placeholder="Add a new Task...">
                             {{--@error('body')
                                 <div class="invalid-feedback">
@@ -70,7 +70,7 @@
                 <form id="add-task" class="w-100" action="{{ route('saveTask', $project->id) }}" method="POST">
                     @csrf
                     <div class="form-group">
-                        {{-- TODO: Fix validation and old value issue --}}
+                        <!-- TODO: Fix validation and old value issue -->
                         <input type="text" name="body" class="form-control" onchange="$('#add-task').submit()" placeholder="Add a new Task...">
                         {{--@error('body')
                             <div class="invalid-feedback">

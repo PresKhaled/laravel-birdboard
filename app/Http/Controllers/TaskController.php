@@ -72,13 +72,9 @@ class TaskController extends Controller
     {
         $this->authorize('update', $project);
 
-        request()->validate(['body' => 'required|max:255']);
+        $task->update(request()->validate(['body' => 'required|max:255']));
 
-        $task->update(['body' => request('body'), 'completed' => false]);// Refactor this later, need default value after refactoring to $task->complete();, to incomplete the task
-
-        if (request()->has('completed')) {
-            $task->complete();
-        }
+        request('completed') ? $task->complete() : $task->incomplete();
 
         return redirect($project->url());
     }

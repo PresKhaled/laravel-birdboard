@@ -6,8 +6,8 @@ use App\Task;
 
 class TaskFactory
 {
-    public function create()
+    public function create(array $attributes = [])
     {
-        return factory(Task::class)->create();
+        return factory(Task::class)->create($attributes);
     }
 }

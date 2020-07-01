@@ -83,19 +83,54 @@ class ProjectTasksTest extends TestCase
     {
         $project = ProjectFactory::withTasks(1)->create();
 
-        // Update request - patch - data
-        $attributes = [
+        $this->actingAs($project->owner)
+             ->patch($project->tasks->first()->url(), [
+                'body' => 'Updated'
+            ]);
+
+        $this->assertDatabaseHas('tasks', [
+            'body' => 'Updated'
+        ]);
+    }
+
+    /** @test */
+    public function a_task_can_be_completed()
+    {
+        $project = ProjectFactory::withTasks(1)->create();
+
+        $this->actingAs($project->owner)
+            ->patch($project->tasks->first()->url(), [
+                'body' => 'Updated',
+                'completed' => true
+            ]);
+        $this->assertDatabaseHas('tasks', [
             'body' => 'Updated',
             'completed' => true
-        ];
+        ]);
+    }
 
-        // Try to update the task, should be success
-        $this->actingAs($project->owner)->patch(route('updateTask', [
-            'project' => $project->id,
-            'task' => $project->tasks->first()->id
-        ]), $attributes);
+    /** @test */
+    public function a_task_can_be_marked_as_incomplete()
+    {
+        //$this->withoutExceptionHandling();
 
-        $this->assertDatabaseHas('tasks', $attributes);
+        $project = ProjectFactory::withTasks(1)->create();
+
+        $this->actingAs($project->owner)
+            ->patch($project->tasks->first()->url(), [
+                'body' => 'Updated',
+                'completed' => true
+            ]);
+
+        $this->patch($project->tasks->first()->url(), [
+            'body' => 'Updated',
+            'completed' => false
+        ]);
+
+        $this->assertDatabaseHas('tasks', [
+            'body' => 'Updated',
+            'completed' => false
+        ]);
     }
 
     /** @test */

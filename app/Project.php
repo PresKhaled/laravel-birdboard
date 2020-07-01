@@ -38,11 +38,9 @@ class Project extends Model
      *
      * @param string $type
      */
-    public function recordActivity($type)
+    public function recordActivity($description)
     {
-        Activity::create([
-            'project_id' => $this->id,
-            'description' => $type
-        ]);
+        // TODO: Fix the task 'incompleted_task' activity records, when update task 'body'.
+        $this->activities()->create(compact('description'));
     }
 }
