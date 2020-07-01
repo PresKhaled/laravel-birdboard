@@ -74,10 +74,11 @@ class TaskController extends Controller
 
         request()->validate(['body' => 'required|max:255']);
 
-        $task->update([
-            'body' => request('body'),
-            'completed' => request()->has('completed')
-        ]);
+        $task->update(['body' => request('body'), 'completed' => false]);// Refactor this later, need default value after refactoring to $task->complete();, to incomplete the task
+
+        if (request()->has('completed')) {
+            $task->complete();
+        }
 
         return redirect($project->url());
     }

@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 //use PHPUnit\Framework\TestCase;
+use Facades\Tests\Setup\TaskFactory;
 use Tests\TestCase;
 use App\Task;
 use App\Project;
@@ -29,5 +30,17 @@ class TaskTest extends TestCase
             'project' => $task->project->id,
             'task' => $task->id
         ]), $task->url());
+    }
+
+    /** @test */
+    public function it_can_be_completed()
+    {
+        $task = TaskFactory::create();
+
+        $this->assertFalse($task->completed);
+
+        $task->complete();
+
+        $this->assertTrue($task->fresh()->completed);
     }
 }
