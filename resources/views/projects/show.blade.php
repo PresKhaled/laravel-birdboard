@@ -84,7 +84,7 @@
         </div>
 
         {{-- Notes --}}
-        <div class="mb-3">
+        <div class="mb-5">
             <h4 class="text-secondary">Notes</h4>
             <form id="update-project" action="{{ route('updateProject', $project->id) }}" method="POST">
                 @csrf
@@ -98,6 +98,23 @@
                     @enderror
                 </div>
             </form>
+        </div>
+
+        {{-- Project Activities --}}
+        <div style="line-height: 2.2">
+            <h4 class="text-secondary">Project Activities</h4>
+                <div class="core-activities">
+                    @foreach ($project->activities as $activity)
+                        <p class="m-0">
+                            <span class="{{ $project->activitiesDiffForHumans($activity->description . '_color') }}">
+                                {{ $project->activitiesDiffForHumans($activity->description) }} "{{ $activity->subject->body }}"
+                            </span>
+                            <span class="text-secondary">
+                                - {{ $activity->created_at->diffForHumans(null, true, true) }}
+                            </span>
+                        </p>
+                    @endforeach
+            </div>
         </div>
     </div>
 @endsection

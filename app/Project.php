@@ -28,9 +28,10 @@ class Project extends Model
         return $this->hasMany(Task::class);
     }
 
+    // Project activities
     public function activities()
     {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(Activity::class)->latest();
     }
 
     /**
@@ -42,5 +43,29 @@ class Project extends Model
     {
         // TODO: Fix the task 'incompleted_task' activity records, when update task 'body'.
         $this->activities()->create(compact('description'));
+    }
+
+    // TODO: Change the name and the place of this method, maybe UseCase or Services class?
+    public function activitiesDiffForHumans(string $description): string
+    {
+        return [
+            // Project activities with colors classes
+            "created" => "Project created",
+            "created_color" => "text-info",
+
+            "updated" => "Project updated",
+            "updated_color" => "text-success",
+
+            // Task activities with colors classes
+            "created_task" => "Task added",
+            "created_task_color" => "text-info",
+
+            "completed_task" => "Task completed",
+            "completed_task_color" => "text-success",
+
+            "incompleted_task" => "Task incompleted",
+            "incompleted_task_color" => "text-danger"
+
+        ][$description];
     }
 }
