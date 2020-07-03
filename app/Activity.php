@@ -6,13 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Activity extends Model
 {
+
+    /**
+     * Attributes to guard against mass assignment.
+     *
+     * @var array
+     */
     protected $guarded = [];
 
-    public function project()
-    {
-        $this->belongsTo(Project::class);
-    }
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'changes' => 'array'
+    ];
 
+    /**
+     * Get the subject of the activity.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function subject()
     {
         return $this->morphTo();

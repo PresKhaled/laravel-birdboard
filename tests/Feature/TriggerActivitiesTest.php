@@ -20,7 +20,11 @@ class TriggerActivitiesTest extends TestCase
 
         $this->assertCount(1, $project->activities);
 
-        $this->assertEquals('created', $project->activities->first()->description);
+        tap($project->activities->last(), function ($activity) {
+            $this->assertEquals('created', $activity->description);
+
+            $this->assertNull($activity->changes);
+        });
     }
 
     /** @test */
@@ -28,11 +32,22 @@ class TriggerActivitiesTest extends TestCase
     {
         $project = ProjectFactory::create();// There's an Observer on Project model
 
+        $originalTitle = $project->title;
+
         $project->update(['title' => 'Updated']);
 
         $this->assertCount(2, $project->activities);
 
-        $this->assertEquals('updated', $project->activities->last()->description);
+        tap($project->activities->last(), function ($activity) use ($originalTitle) {
+            $this->assertEquals('updated', $activity->description);
+
+            $expected = [
+                'before' => ['title' => $originalTitle],
+                'after' => ['title' => 'Updated']
+            ];
+
+            $this->assertEquals($expected, $activity->changes);
+        });
     }
 
     /** @test */
