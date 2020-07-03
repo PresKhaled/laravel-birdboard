@@ -35,20 +35,20 @@ class Project extends Model
     {
         return [
             // Project activities with colors classes
-            "created" => "Project created",
-            "created_color" => "text-info",
+            "created_project" => "created this project",
+            "created_project_color" => "text-primary",
 
-            "updated" => "Project updated",
-            "updated_color" => "text-success",
+            "updated_project" => "updated this project",
+            "updated_project_color" => "text-success",
 
             // Task activities with colors classes
-            "created_task" => "Task added",
-            "created_task_color" => "text-info",
+            "created_task" => "added the task",
+            "created_task_color" => "text-primary",
 
-            "completed_task" => "Task completed",
+            "completed_task" => "completed the task",
             "completed_task_color" => "text-success",
 
-            "incompleted_task" => "Task incompleted",
+            "incompleted_task" => "incompleted the task",
             "incompleted_task_color" => "text-danger"
 
         ][$description];
