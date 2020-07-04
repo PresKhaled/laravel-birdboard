@@ -8,11 +8,14 @@
         </div>
         @forelse ($projects as $project)
             <div class="card mb-3"
-                onmouseover="$(this).css('box-shadow', '0 0 0 0.2rem rgba(97, 157, 206, 0.5)')"
-                onmouseout="$(this).css('box-shadow', '')" onclick="window.location = '{{ $project->url() }}'" style="cursor: pointer">
+                onmouseover="$(this).css('box-shadow', '0 7px 10px -5px #00000024')"
+                onmouseout="$(this).css('box-shadow', '')" onclick="window.location = '{{ $project->url() }}'" style="cursor: pointer; transition: box-shadow .4s">
 
-                <div class="card-header">
-                    {{ $project->title }}
+                <div class="card-header d-flex justify-content-between" style="align-items: baseline">
+                    <span class="text-primary">{{ $project->title }}</span>
+
+                    {{-- Delete the project --}}
+                    @include('projects._delete')
                 </div>
                 <div class="card-body">
                     <h5 class="card-title text-secondary" style="line-height: 1.5">{{ $project->description }}</h5>

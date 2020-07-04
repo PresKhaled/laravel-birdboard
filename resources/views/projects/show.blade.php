@@ -6,20 +6,21 @@
         <header>
             {{-- Quick Navigation --}}
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('projects') }}">Projects</a></li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    <select onchange="navigate(this.value)">
-                        @foreach ($project->owner->projects as $item)
-                            <option value="{{ $item->url() }}" {{ $item->id == $project->id ? "selected='selected'" : '' }}>{{ Str::limit($item->title, 30) }}</option>
-                        @endforeach
-                    </select>
-                    <script>
-                        function navigate(url) {
-                            return window.location = url;
-                        }
-                    </script>
-                </li>
+                <ol class="breadcrumb" style="align-items: baseline">
+                    <li class="breadcrumb-item" style="align-self: center"><a href="{{ route('projects') }}">Projects</a></li>
+                    <li class="breadcrumb-item active" style="align-items: baseline" aria-current="page">
+                        <div class="dropdown">
+                            <button class="btn btn-info dropdown-toggle" style="padding: 2px 8px; color: #fff" type="button" id="quick-navigation" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ Str::limit($project->title, $maxChar = 25) }}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="quick-navigation">
+                                @foreach ($project->owner->projects->take(5) as $item)
+                                    <a class="dropdown-item" href="{{ $item->url() }}">{{ Str::limit($item->title, $maxChar) }}</a>
+                                @endforeach
+                                <a class="dropdown-item text-secondary" href="{{ route('createProject') }}">+ New</a>
+                            </div>
+                        </div>
+                    </li>
                 </ol>
             </nav>
 
@@ -101,9 +102,12 @@
         </div>
 
         {{-- Project Activities --}}
-        <div style="line-height: 2.2">
+        <div class="mb-5" style="line-height: 2.2">
             <h4 class="text-secondary">Project Activities</h4>
             @include('projects._activities')
         </div>
+
+        {{-- Delete the Project --}}
+        @include('projects._delete')
     </div>
 @endsection

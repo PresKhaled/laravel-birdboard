@@ -76,6 +76,32 @@ class ManageProjectsTest extends TestCase
     }
 
     /** @test */
+    public function a_user_can_delete_a_project()
+    {
+        $project = ProjectFactory::create();
+
+        $this->actingAs($project->owner)
+            ->delete($project->url())
+            ->assertRedirect('projects');
+
+        $this->assertDatabaseMissing('projects', $project->only('id'));
+    }
+
+    /** @test */
+    public function unauthorized_users_cannot_delete_projects()
+    {
+        $project = ProjectFactory::create();
+
+        $this->delete($project->url())
+            ->assertRedirect('login');
+
+        $this->actingAsUser();
+
+        $this->delete($project->url())
+             ->assertStatus(403);
+    }
+    
+    /** @test */
     public function a_user_can_update_a_projects_general_notes()
     {
         $project = ProjectFactory::create();

@@ -30,6 +30,15 @@ Route::group(['middleware' => 'auth'], function () {
     
     Route::patch('project/{project}', 'ProjectController@update')->name('updateProject');
 
+    Route::delete('project/{project}', 'ProjectController@destroy')->name('deleteProject');
+
+    /* TODO: To use it,
+     *
+     * delete all routes name and use action('Controller@action', $wildcardParameters)
+     * instead of route('name', $wildcardParameters)
+     */
+    //Route::resource('projects', 'ProjectsController');
+
     Route::post('project/{project}/task', 'TaskController@store')->name('saveTask');
 
     Route::patch('project/{project}/task/{task}', 'TaskController@update')->name('updateTask');

@@ -83,14 +83,18 @@ class ProjectController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the project
      *
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
     public function destroy(Project $project)
     {
-        //
+        $this->authorize('update', $project);
+
+        $project->delete();
+
+        return redirect('projects');
     }
 
     /**
