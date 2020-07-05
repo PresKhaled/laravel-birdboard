@@ -53,7 +53,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        return auth()->user()->is($project->owner);// Brilliant
+        return $user->is($project->owner) || $project->members->contains($user);// Brilliant
     }
 
     /**

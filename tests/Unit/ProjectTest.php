@@ -5,6 +5,8 @@ namespace Tests\Unit;
 //use PHPUnit\Framework\TestCase;// Good move
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Facades\Tests\Setup\ProjectFactory;
+use App\User;
 
 class ProjectTest extends TestCase
 {
@@ -13,7 +15,7 @@ class ProjectTest extends TestCase
     /** @test */
     public function a_project_has_a_url()
     {
-        $project = factory('App\Project')->create();
+        $project = ProjectFactory::create();
 
         $this->assertEquals(route('project', $project->id), $project->url());
     }
@@ -21,15 +23,25 @@ class ProjectTest extends TestCase
     /** @test */
     public function it_belongs_to_an_owner()
     {
-        $project = factory('App\Project')->create();
+        $project = ProjectFactory::create();
 
         $this->assertInstanceOf('App\User', $project->owner);
     }
 
     /** @test */
+    public function it_can_invite_a_user()
+    {
+        $project = ProjectFactory::create();
+
+        $project->invite($user = factory(User::class)->create());
+
+        $this->assertTrue($project->members->contains($user));
+    }
+
+    /** @test */
     public function it_can_add_a_task()
     {
-        $project = factory('App\Project')->create();
+        $project = ProjectFactory::create();
 
         $task = $project->addTask('Some task');// Save a task associated with current project to database, hasMany->create() relationship
 

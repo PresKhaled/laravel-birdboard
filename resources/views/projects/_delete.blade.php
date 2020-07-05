@@ -3,6 +3,6 @@
         @csrf
         @method('delete')
 
-        <button type="submit" class="btn btn-danger">Delete</button>
+        <button type="submit" class="btn btn-danger" style="font-size: 12px; padding: 5px 10px">Delete</button>
     </form>
 </footer>

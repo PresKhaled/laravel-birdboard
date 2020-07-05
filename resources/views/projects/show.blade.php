@@ -14,6 +14,7 @@
                                 {{ Str::limit($project->title, $maxChar = 25) }}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="quick-navigation">
+                                <!-- TODO: Exclude the current project from the list -->
                                 @foreach ($project->owner->projects->take(5) as $item)
                                     <a class="dropdown-item" href="{{ $item->url() }}">{{ Str::limit($item->title, $maxChar) }}</a>
                                 @endforeach
