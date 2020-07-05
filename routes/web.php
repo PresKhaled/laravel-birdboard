@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('projects/create', 'ProjectController@create')->name('createProject');
 
     Route::post('projects', 'ProjectController@store')->name('saveProject');
+
     
     Route::get('project/{project}', 'ProjectController@show')->name('project');
 
@@ -38,6 +39,10 @@ Route::group(['middleware' => 'auth'], function () {
      * instead of route('name', $wildcardParameters)
      */
     //Route::resource('projects', 'ProjectsController');
+
+
+    Route::post('project/{project}/invitation', 'ProjectInvitationController@store')->name('invitation');
+
 
     Route::post('project/{project}/task', 'TaskController@store')->name('saveTask');
 
