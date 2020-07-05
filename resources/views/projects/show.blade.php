@@ -60,12 +60,19 @@
             </div>
         </header>
 
-        {{-- Project Details --}}
-        <div class="card mb-5">
-            <div class="card-body">
-                <h5 class="card-title text-secondary" style="line-height: 1.5">{{ $project->description }}</h5>
-                <p class="card-text text-secondary">{{ $project->created_at->diffForHumans() }}</p>
+        <div class="d-flex mb-5">
+            {{-- Project Details --}}
+            <div class="title card" style="flex: 2">
+                <div class="card-body">
+                    <h5 class="card-title text-secondary" style="line-height: 1.5">{{ $project->description }}</h5>
+                    <p class="card-text text-secondary">{{ $project->created_at->diffForHumans() }}</p>
+                </div>
             </div>
+
+            {{-- Project Invitation --}}
+            @can('manage', $project)
+                @include('projects._invite', ['errorsBag' => 'invitaion'])
+            @endcan
         </div>
 
         {{-- Tasks --}}
@@ -89,7 +96,7 @@
                             @enderror--}}
                         </div>
                         <div class="form-check pt-1 ml-3">
-                        <input name="completed" class="form-check-input position-static" style="transform: scale(1.6)" onchange="this.form.submit()" type="checkbox" {{ $task->completed ? "checked='checked'" : '' }}>
+                            <input name="completed" class="form-check-input position-static" style="transform: scale(1.6)" onchange="this.form.submit()" type="checkbox" {{ $task->completed ? "checked='checked'" : '' }}>
                         </div>
                     </div>
                 </form>

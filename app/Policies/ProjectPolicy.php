@@ -91,4 +91,16 @@ class ProjectPolicy
     {
         //
     }
+
+    /**
+     * Determine if the user may manage a project.
+     *
+     * @param  User    $user
+     * @param  Project $project
+     * @return bool
+     */
+    public function manage(User $user, Project $project)
+    {
+        return $user->is($project->owner);
+    }
 }
