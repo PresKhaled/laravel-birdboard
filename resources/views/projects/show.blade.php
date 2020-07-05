@@ -14,11 +14,13 @@
                                 {{ Str::limit($project->title, $maxChar = 25) }}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="quick-navigation">
-                                <!-- TODO: Exclude the current project from the list -->
                                 @foreach ($project->owner->projects->take(5) as $item)
+                                    @if ($item->id == $project->id)
+                                        @continue
+                                    @endif
                                     <a class="dropdown-item" href="{{ $item->url() }}">{{ Str::limit($item->title, $maxChar) }}</a>
                                 @endforeach
-                                <a class="dropdown-item text-secondary" href="{{ route('createProject') }}">+ New</a>
+                                <a class="dropdown-item text-info" href="{{ route('createProject') }}">+ New</a>
                             </div>
                         </div>
                     </li>
@@ -27,23 +29,22 @@
 
             {{-- Heading --}}
             <div class="d-flex justify-content-between my-4" style="align-items: center">
+                {{-- Project title --}}
                 <h1 class="text-secondary m-0 pr-5">{{ $project->title }}</h1>
+
+                {{-- Project users --}}
                 <div class="d-flex items-center text-center" style="align-items: center; font-size: 12px">
-                    
-                    <!-- FIXME: Don't name the classes with backend terms -->
-                    <div class="project-owner {{ $usersMargin = 'mr-3' }}" title="{{ $project->owner->name }}">
+                    <div title="{{ $project->owner->name }}">
                         <img
                         src="{{ gravatar_url($project->owner->email) }}"
                         alt="{{ $project->owner->name }}'s avatar"
                         class="user_gravatar mb-1">
                     
-                        <span class="d-block text-primary">{{ Str::limit($project->owner->name, $nameLimit = 15) }}</span>
+                        <span class="d-block text-info">{{ Str::limit($project->owner->name, $nameLimit = 15) }}</span>
                     </div>
 
-                    <!-- FIXME: Don't name the classes with backend terms -->
                     @foreach ($project->members as $member)
-                        <!-- FIXME: Don't use php on css -->
-                        <div class="project-members {{ $loop->last ? '' : $usersMargin }}" title="{{ $member->name }}">
+                        <div class="ml-3" title="{{ $member->name }}">
                             <img
                             src="{{ gravatar_url($member->email) }}"
                             alt="{{ $member->name }}'s avatar"
@@ -52,9 +53,10 @@
                             <span class="d-block text-secondary">{{ Str::limit($member->name, $nameLimit) }}</span>
                         </div>
                     @endforeach
+
+                    {{-- Project edit --}}
                     <button class="btn btn-primary ml-5" onclick="window.location = '{{ route('editProject', $project->id) }}'">Edit</button>
                 </div>
-                
             </div>
         </header>
 
