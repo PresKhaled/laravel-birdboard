@@ -26,9 +26,35 @@
             </nav>
 
             {{-- Heading --}}
-            <div class="d-flex justify-content-between my-4" style="align-items: start">
+            <div class="d-flex justify-content-between my-4" style="align-items: center">
                 <h1 class="text-secondary m-0 pr-5">{{ $project->title }}</h1>
-                <button class="btn btn-primary" onclick="window.location = '{{ route('editProject', $project->id) }}'">Edit</button>
+                <div class="d-flex items-center text-center" style="align-items: center; font-size: 12px">
+                    
+                    <!-- FIXME: Don't name the classes with backend terms -->
+                    <div class="project-owner {{ $usersMargin = 'mr-3' }}" title="{{ $project->owner->name }}">
+                        <img
+                        src="{{ gravatar_url($project->owner->email) }}"
+                        alt="{{ $project->owner->name }}'s avatar"
+                        class="user_gravatar mb-1">
+                    
+                        <span class="d-block text-primary">{{ Str::limit($project->owner->name, $nameLimit = 15) }}</span>
+                    </div>
+
+                    <!-- FIXME: Don't name the classes with backend terms -->
+                    @foreach ($project->members as $member)
+                        <!-- FIXME: Don't use php on css -->
+                        <div class="project-members {{ $loop->last ? '' : $usersMargin }}" title="{{ $member->name }}">
+                            <img
+                            src="{{ gravatar_url($member->email) }}"
+                            alt="{{ $member->name }}'s avatar"
+                            class="user_gravatar mb-1">
+
+                            <span class="d-block text-secondary">{{ Str::limit($member->name, $nameLimit) }}</span>
+                        </div>
+                    @endforeach
+                    <button class="btn btn-primary ml-5" onclick="window.location = '{{ route('editProject', $project->id) }}'">Edit</button>
+                </div>
+                
             </div>
         </header>
 

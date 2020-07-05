@@ -14,7 +14,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = auth()->user()->accessibleProjects();
+        $projects = auth()->user()->sharedProjects();
 
         return view('projects.index', compact('projects'));
     }
