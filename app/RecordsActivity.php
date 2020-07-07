@@ -63,6 +63,7 @@ trait RecordsActivity
      */
     public function recordActivity($description)
     {
+        // BUG: the invited user cannot invite again with an error message something like 'User already participated' with unit test
         $this->activities()->create([
             'user_id' => ($this->project ?? $this)->owner->id,
             'description' => $description,

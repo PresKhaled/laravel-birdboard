@@ -15,7 +15,9 @@
                     <span class="text-primary">{{ $project->title }}</span>
 
                     {{-- Delete the project --}}
-                    @include('projects._delete')
+                    @can ('manage', $project)
+                        @include('projects._delete')
+                    @endcan
                 </div>
                 <div class="card-body">
                     <h5 class="card-title text-secondary" style="line-height: 1.5">{{ $project->description }}</h5>

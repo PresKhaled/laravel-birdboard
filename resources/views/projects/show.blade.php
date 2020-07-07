@@ -144,6 +144,8 @@
         </div>
 
         {{-- Delete the Project --}}
-        @include('projects._delete')
+        @can ('manage', $project)
+            @include('projects._delete')
+        @endcan
     </div>
 @endsection

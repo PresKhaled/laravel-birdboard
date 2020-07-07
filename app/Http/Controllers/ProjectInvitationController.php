@@ -40,6 +40,11 @@ class ProjectInvitationController extends Controller
     {
         $user = User::whereEmail(request('email'))->first();
 
+        // BUG: invited user cannot invite again with error message something like 'User already particpated' with unit test
+        //if ($project->members->contains($user)) {
+        // Add errors to invitation bag
+        //}
+
         $project->invite($user);
 
         return redirect($project->url());

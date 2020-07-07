@@ -27,26 +27,12 @@ class ManageProjectsTest extends TestCase
     /** @test */
     public function a_user_can_create_a_project()
     {
-        $this->actingAsUser();// Sign in
+        $this->actingAsUser();
 
-        $this->get('projects/create')->assertStatus(200);// Authorized to enter a create project view
+        $this->get('projects/create')->assertStatus(200);
 
-        // Project data
-        $attributes = [
-            'title' => $this->faker->sentence,
-            'description' => $this->faker->sentence,
-            'notes' => null
-        ];
-        
-        $response = $this->post('projects', $attributes);// Save project into database
-
-        $this->assertDatabaseHas('projects', $attributes);// Check database.projects has this data
-
-        $project = Project::where($attributes)->first();// Get saved project from database
-
-        $response->assertRedirect($project->url());// Redirect to project view
-
-        $this->get($project->url())// A view contains the project data
+        $this->followingRedirects()
+            ->post('projects', $attributes = factory(Project::class)->raw())
             ->assertSee($attributes['title'])
             ->assertSee($attributes['description'])
             ->assertSee($attributes['notes']);
